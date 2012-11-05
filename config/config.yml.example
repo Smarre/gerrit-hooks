@@ -1,0 +1,8 @@
+
+gerrit:
+    git_url: ssh://user@url.to.gerrit.org:29418
+
+integrity:
+    uri: http://integrity.server.org
+    user: admin
+    password: secret
