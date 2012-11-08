@@ -18,7 +18,7 @@ module GerritHooks
 
             p = Trollop::Parser.new do
                 opt :change, "Change id", type: :string, required: true
-                opt :is_draft, "Whether the change is a draft", :required => true
+                opt :is_draft, "Whether the change is a draft", type: :string, default: "false", required: false
                 opt :change_url, "URL to the change", type: :string, required: true
                 opt :project, "Project of the change", type: :string, required: true
                 opt :branch, "Branch of the project for the change", type: :string, required: true
@@ -32,7 +32,7 @@ module GerritHooks
                 p.parse args
             end
 
-            @is_draft = opts[:is_draft]
+            if opts[:is_draft] == "true" then @is_draft = true else @is_draft = false end
 
             @change_id = opts[:change]
             @change_url = opts[:change_url]
