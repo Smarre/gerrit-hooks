@@ -48,7 +48,7 @@ module GerritHooks
 
         def submit
             part_change_id = @change_id[-2, 2]
-            checkout_command = "#{@git_url}/#{@project_name} refs/changes/#{part_change_id}/#{@change_id}/#{@patchset_id} && git checkout FETCH_HEAD"
+            checkout_command = "git fetch #{@git_url}/#{@project_name} refs/changes/#{part_change_id}/#{@change_id}/#{@patchset_id} && git checkout FETCH_HEAD"
             request_build @project_name, checkout_command
         end
     end
