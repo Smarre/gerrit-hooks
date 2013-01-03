@@ -50,8 +50,11 @@ module GerritHooks
         end
 
         def submit
+            project_name = @project_name.gsub "\/" do
+                "-"
+            end
             checkout_command = "git fetch #{@git_url}/#{@project_name} refs/changes/#{@short_identifier}/#{@identifier}/#{@patchset_id} && git checkout FETCH_HEAD"
-            request_build @project_name, checkout_command
+            request_build project_name, checkout_command
         end
     end
 
