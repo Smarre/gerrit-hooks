@@ -2,6 +2,7 @@
 require "psych"
 require "net/http"
 require "uri/http"
+require "mechanize"
 
 module GerritHooks
 
@@ -27,6 +28,7 @@ module GerritHooks
             result
         end
 
+        # uses Net::HTTP
         def post_request host, path, payload = {}
             uri = URI("#{host}#{path}")
             req = Net::HTTP::Post.new uri.path
@@ -46,6 +48,13 @@ module GerritHooks
             end
 
             result
+        end
+
+        # uses Mechanize
+        def request_page uri
+            agent = Mechanize.new
+            agent.add_auth uri, @integrity_user, @integrity_pass
+            agent.get uri
         end
 
         private

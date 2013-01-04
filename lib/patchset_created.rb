@@ -8,8 +8,6 @@ module GerritHooks
     class PatchsetCreated < Base
 
         def initialize
-            parse_args
-
             super
         end
 
