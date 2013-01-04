@@ -12,7 +12,6 @@ module GerritHooks
         end
 
         def parse_args args = ARGV
-            return false if args.empty?
 
             p = Trollop::Parser.new do
                 opt :change, "Change id", type: :string, required: true
@@ -27,6 +26,7 @@ module GerritHooks
             end
 
             opts = Trollop::with_standard_exception_handling p do
+                raise Trollop::HelpNeeded if args.empty?
                 p.parse args
             end
 
