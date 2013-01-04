@@ -68,6 +68,7 @@ module GerritHooks
 
             g = config["gerrit"]
             @git_url = g["git_url"]
+            @ssh_url = g["ssh_params"]
         end
     end
 

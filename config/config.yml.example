@@ -1,5 +1,6 @@
 
 gerrit:
+    ssh_params: -l user url.to.gerrit.org -p 29418
     git_url: ssh://user@url.to.gerrit.org:29418
 
 integrity:
