@@ -23,7 +23,7 @@ When /^build request is submitted$/ do
     @result = @set.submit
 end
 
-Then /^validate that build succeeds$/ do
+Then /^validate that build (succeeds|fails)$/ do |resolution|
     project_name = @project.gsub "\/" do
         "-"
     end
@@ -44,5 +44,9 @@ Then /^validate that build succeeds$/ do
 
     element = page.parser.at_xpath "//div[@class='success']"
 
-    element.to_s.should_not == ""
+    if resolution == "succeeds"
+        element.to_s.should_not == ""
+    elsif resolution == "fails"
+        element.to_s.should == ""
+    end
 end

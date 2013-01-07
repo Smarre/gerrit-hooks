@@ -36,3 +36,18 @@ checkout.
          | patchset  | 1                                        |
         When build request is submitted
         Then validate that build succeeds
+
+    Scenario: ensure that failing tests fails build at slam/skeleton
+        Given PatchsetCreated created
+        And patchset’s input arguments are:
+         | change    | 2253                                     |
+         | is-draft  | false                                    |
+         | change-url| https://service.slm.fi/gerrit/#/c/2253/  |
+         | project   | slam/skeleton                            |
+         | branch    | master                                   |
+         | topic     |                                          |
+         | uploader  | Test Uploader                            |
+         | commit    | 4d1ebdb56b7adede7e42c0f71f3e7eefa0f7c10d |
+         | patchset  | 1                                        |
+        When build request is submitted
+        Then validate that build fails
