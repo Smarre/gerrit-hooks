@@ -7,6 +7,8 @@ created = GerritHooks::PatchsetCreated.new
 created.parse_args
 uri = created.submit
 
+cli = GerritHooks::Cli.new
+
 success = cli.check_for_success uri
 
 if element.to_s == "" then success = true else success = false end
