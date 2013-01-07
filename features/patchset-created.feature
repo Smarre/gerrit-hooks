@@ -10,14 +10,14 @@ checkout.
     Scenario: do basic call to alarmsystem
         Given PatchsetCreated created
         And patchset’s input arguments are:
-         | change    | 1622                                     |
+         | change    | 2122                                     |
          | is-draft  | false                                    |
-         | change-url| https://service.slm.fi/gerrit/#/c/1622/  |
+         | change-url| https://service.slm.fi/gerrit/#/c/2122/  |
          | project   | alarmsystem                              |
          | branch    | master                                   |
          | topic     |                                          |
          | uploader  | Test Uploader                            |
-         | commit    | 1e53274b5b1846c509f436a30ccaa2eba1051412 |
+         | commit    | dummy                                    |
          | patchset  | 1                                        |
         When build request is submitted
         Then validate that build succeeds
