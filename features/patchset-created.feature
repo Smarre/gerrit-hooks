@@ -1,4 +1,6 @@
 
+# NOTE: the urls here are from Gerrit instance which people can’t access. Don’t try to run tests for now :)
+
 Feature: Use patchset-created Gerrit hook
 
 This hook allows sending notifications to Integrity about that there is new
