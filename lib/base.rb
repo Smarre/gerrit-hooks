@@ -52,6 +52,9 @@ module GerritHooks
 
         # uses Mechanize
         def request_page uri
+            raise "invalid uri" if uri.nil?
+            raise "integrity user or pass missing" if @integrity_user.nil? or @integrity_pass.nil?
+
             agent = Mechanize.new
             agent.add_auth uri, @integrity_user, @integrity_pass
             agent.get uri

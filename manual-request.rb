@@ -5,13 +5,13 @@ require_relative "lib/cli"
 
 request = GerritHooks::ManualRequest.new
 request.parse_args
-request.submit
+uri = request.submit
 
 cli = GerritHooks::Cli.new
 
-success = cli.check_for_success
+success = cli.check_for_success uri
 
 request.change_changeset_status success
 
-exit 1 if success == false
+raise "Change set build failed" if success == false
 exit 0

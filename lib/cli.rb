@@ -6,13 +6,13 @@ module GerritHooks
         # #
         # Returns true is success, false if not
         #
-        def check_for_success
+        def check_for_success uri
             element = nil
 
             while true
 
                 base = GerritHooks::Base.new
-                page = base.request_page @result
+                page = base.request_page uri
 
                 element = page.parser.at_xpath "//div[@class='building']"
                 break if element.to_s == ""

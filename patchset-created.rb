@@ -5,9 +5,9 @@ require_relative "lib/cli"
 
 created = GerritHooks::PatchsetCreated.new
 created.parse_args
-created.submit
+uri = created.submit
 
-success = cli.check_for_success
+success = cli.check_for_success uri
 
 if element.to_s == "" then success = true else success = false end
 
