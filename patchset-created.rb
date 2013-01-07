@@ -11,8 +11,6 @@ cli = GerritHooks::Cli.new
 
 success = cli.check_for_success uri
 
-if element.to_s == "" then success = true else success = false end
-
 created.change_changeset_status success
 
 exit 1 if success == false
