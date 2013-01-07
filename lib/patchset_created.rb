@@ -14,7 +14,7 @@ module GerritHooks
         def parse_args args = ARGV
 
             p = Trollop::Parser.new do
-                opt :change, "Change id", type: :string, required: true
+                opt :change, "Change id, like Id0eec3a5198489bf35ef016dba39961f8675a77c", type: :string, required: true
                 opt :is_draft, "Whether the change is a draft", type: :string, default: "false", required: false
                 opt :change_url, "URL to the change", type: :string, required: true
                 opt :project, "Project of the change", type: :string, required: true
@@ -32,7 +32,7 @@ module GerritHooks
 
             if opts[:is_draft] == "true" then @is_draft = true else @is_draft = false end
 
-            @change_id = opts[:change]
+            @git_change_id = opts[:change]
             @change_url = opts[:change_url]
             @project_name = opts[:project]
             @branch_name = opts[:branch]
@@ -42,6 +42,7 @@ module GerritHooks
             @patchset_id = opts[:patchset]
 
             @identifier = @change_url.split("/")[-1]
+            @change_id = @identifier
             @short_identifier = @identifier[-2, 2]
 
             true
