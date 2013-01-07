@@ -22,7 +22,11 @@ module GerritHooks
             element = page.parser.at_xpath "//div[@class='success']"
 
             # failure
-            if element.to_s == "" then success = true else success = false end
+            if element.to_s == ""
+                success = false
+            else
+                success = true
+            end
 
             success
         end
