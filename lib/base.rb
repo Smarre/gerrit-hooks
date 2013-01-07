@@ -57,6 +57,30 @@ module GerritHooks
             agent.get uri
         end
 
+        def submit
+            raise "@project_name missing" if @project_name.nil?
+            raise "@git_url missing" if @git_url.nil?
+            raise "@short_identifier missing" if @short_identifier.nil?
+            raise "@identifier missing" if @identifier.nil?
+            raise "@patchset_id missing" if @patchset_id.nil?
+
+            project_name = @project_name.gsub "\/" do
+                "-"
+            end
+            checkout_command = "git fetch #{@git_url}/#{@project_name} refs/changes/#{@short_identifier}/#{@identifier}/#{@patchset_id} && git checkout FETCH_HEAD"
+            request_build project_name, checkout_command
+        end
+
+        def change_changeset_status success
+            raise "@project_name missing" if @project_name.nil?
+            raise "@ssh_url missing" if @ssh_url.nil?
+            raise "@change_id missing" if @change_id.nil?
+            raise "@patchset_id missing" if @patchset_id.nil?
+
+            if success == true then verified = "1" else verified = "-1" end
+            puts `ssh #{@ssh_url} gerrit review --verified #{verified} --project #{@project_name} #{@change_id},#{@patchset_id}`
+        end
+
         private
 
         def parse_config

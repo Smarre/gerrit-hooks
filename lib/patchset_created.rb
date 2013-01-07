@@ -46,19 +46,6 @@ module GerritHooks
 
             true
         end
-
-        def submit
-            project_name = @project_name.gsub "\/" do
-                "-"
-            end
-            checkout_command = "git fetch #{@git_url}/#{@project_name} refs/changes/#{@short_identifier}/#{@identifier}/#{@patchset_id} && git checkout FETCH_HEAD"
-            request_build project_name, checkout_command
-        end
-
-        def change_changeset_status success
-            if success == true then verified = "1" else verified = "-1" end
-            puts `ssh #{@ssh_url} gerrit review --verified #{verified} --project #{@project_name} #{@change_id},#{@patchset_id}`
-        end
     end
 
 end
