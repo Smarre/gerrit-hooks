@@ -70,7 +70,7 @@ module GerritHooks
             project_name = @project_name.gsub "\/" do
                 "-"
             end
-            checkout_command = "git fetch #{@git_url}/#{@project_name} refs/changes/#{@short_identifier}/#{@identifier}/#{@patchset_id} && git checkout FETCH_HEAD"
+            checkout_command = eval "\"#{@additional_command}\""
             request_build project_name, checkout_command
         end
 
@@ -92,6 +92,7 @@ module GerritHooks
             @integrity_uri = i["uri"]
             @integrity_user = i["user"]
             @integrity_pass = i["password"]
+            @additional_command = i["additional_command"]
 
             g = config["gerrit"]
             @git_url = g["git_url"]
