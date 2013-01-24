@@ -27,6 +27,9 @@ Then /^validate that build (succeeds|fails)$/ do |resolution|
     project_name = @project.gsub "\/" do
         "-"
     end
+    project_name.gsub! "_" do
+        "-"
+    end
     #regexp = Regexp.new "http:\/\/integrity.service.slm.fi\/alarmsystem\/builds\/\d{1,}"
     @result.should match /http:\/\/integrity.service.slm.fi\/#{project_name}\/builds\/\d{1,}/
 

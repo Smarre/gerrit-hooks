@@ -70,6 +70,9 @@ module GerritHooks
             project_name = @project_name.gsub "\/" do
                 "-"
             end
+            project_name.gsub! "_" do
+                "-"
+            end
 
             checkout_command = eval "\"#{@additional_command}\"" if permission_for_additional_command
             request_build project_name, checkout_command

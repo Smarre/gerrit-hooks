@@ -14,3 +14,10 @@ accordingly.
          | project      | slam/skeleton                            |
          | patchset-id  | 1                                        |
         Then validate that build succeeds
+
+    Scenario: request manual build from Gerrit
+        Given manual build request is issued with data:
+         | change-id    | 2399                                     |
+         | project      | po-public_html                           |
+         | patchset-id  | 1                                        |
+        Then validate that build succeeds
