@@ -10,7 +10,7 @@ accordingly.
 
     Scenario: request manual build from Gerrit
         Given manual build request is issued with data:
-         | change-id    | 2253                                     |
+         | change-id    | 2363                                     |
          | project      | slam/skeleton                            |
          | patchset-id  | 1                                        |
         Then validate that build succeeds
