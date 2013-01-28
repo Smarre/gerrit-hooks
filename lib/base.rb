@@ -74,7 +74,6 @@ module GerritHooks
                 "-"
             end
 
-            checkout_command = eval "\"#{@additional_command}\"" if permission_for_additional_command
             request_build project_name, checkout_command
         end
 
@@ -96,20 +95,30 @@ module GerritHooks
             @integrity_uri = i["uri"]
             @integrity_user = i["user"]
             @integrity_pass = i["password"]
-            additional = i["additional_command"]
-            @additional_command = additional["command"]
-            @includes = additional["include_projects"]
-            @excludes = additional["exclude_projects"]
+            @additional_commands = i["additional_commands"]
 
             g = config["gerrit"]
             @git_url = g["git_url"]
             @ssh_url = g["ssh_params"]
         end
 
-        def permission_for_additional_command
-            return false unless @includes.include? @project_name or @includes[0] != "all"
-            return false if @excludes.include? @project_name
-            true
+        def checkout_command
+            @additional_commands.each do |arr|
+                command = arr["command"]
+                includes = arr["include_projects"]
+                excludes = arr["exclude_projects"]
+
+                next if includes[0].nil?
+
+                if includes[0] == "all"
+                    next if excludes.include? @project_name
+                    return eval "\"#{command}\""
+                end
+
+                return eval "\"#{command}\"" if includes.include? @project_name
+            end
+
+            nil
         end
     end
 

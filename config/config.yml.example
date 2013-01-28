@@ -7,9 +7,15 @@ integrity:
     uri: http://integrity.server.org
     user: admin
     password: secret
-    additional_command:
-        command: "git fetch #{@git_url}/#{@project_name} refs/changes/#{@short_identifier}/#{@identifier}/#{@patchset_id} && git checkout FETCH_HEAD"
-        include_projects:
-            - all
-        exclude_projects:
-            - conf
+    additional_commands:
+        -
+            command: "ruby test/scripts/run_command.rb --command 'git fetch #{@git_url}/#{@project_name} refs/changes/#{@short_identifier}/#{@identifier}/#{@patchset_id} && git checkout FETCH_HEAD'"
+            include_projects:
+                - all
+            exclude_projects:
+                - conf
+                - alarmsystem
+        -
+            command: "git fetch #{@git_url}/#{@project_name} refs/changes/#{@short_identifier}/#{@identifier}/#{@patchset_id} && git checkout FETCH_HEAD"
+            include_projects:
+                - alarmsystem
