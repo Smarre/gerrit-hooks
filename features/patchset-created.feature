@@ -53,6 +53,7 @@ checkout.
         Then validate that build fails
 
     Scenario: ensure that test to excluded project works
+    TODO: see if this actually tests anything real
         Given PatchsetCreated created
         And patchset’s input arguments are:
          | change    | 2402                                     |
@@ -64,5 +65,20 @@ checkout.
          | uploader  | Test Uploader                            |
          | commit    | dummy                                    |
          | patchset  | 1                                        |
+        When build request is submitted
+        Then validate that build succeeds
+
+    Scenario: ensure that test to project which uses ”all” include block works
+        Given PatchsetCreated created
+        And patchset’s input arguments are:
+         | change    | dummy                                    |
+         | is-draft  | false                                    |
+         | change-url| https://service.slm.fi/gerrit/#/c/2414/  |
+         | project   | slam/class/payment                       |
+         | branch    | master                                   |
+         | topic     |                                          |
+         | uploader  | Test Uploader                            |
+         | commit    | dummy                                    |
+         | patchset  | 2                                        |
         When build request is submitted
         Then validate that build succeeds
