@@ -60,6 +60,10 @@ module GerritHooks
             @notifier.request_page uri
         end
 
+        def check_for_success uri
+            @notifier.check_for_success uri
+        end
+
         private
 
         def parse_config
