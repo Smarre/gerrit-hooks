@@ -1,8 +1,6 @@
 
 require "psych"
-require "net/http"
-require "uri/http"
-require "mechanize"
+require "notify-integrity"
 
 module GerritHooks
 
@@ -11,13 +9,16 @@ module GerritHooks
     class Base
         def initialize
             parse_config
+
+            @notifier = NotifyIntegrity.new
+            @notifier.auth @integrity_user, @integrity_pass
         end
 
         def request_build project_name, checkout_command
             headers = {
                 "additional_command" => checkout_command
             }
-            result = post_request @integrity_uri, "/#{project_name}/builds", headers
+            result = @notifier.post_request @integrity_uri, "/#{project_name}/builds", headers
 
             if result.instance_of? Net::HTTPFound
                 headers = result.to_hash
@@ -26,38 +27,6 @@ module GerritHooks
             end
 
             result
-        end
-
-        # uses Net::HTTP
-        def post_request host, path, payload = {}
-            uri = URI("#{host}#{path}")
-            req = Net::HTTP::Post.new uri.path
-            req.basic_auth @integrity_user, @integrity_pass
-            req.set_form_data payload
-
-            result = nil
-            Net::HTTP.start(uri.hostname, uri.port) do |http|
-                result = http.request(req)
-            end
-
-            if result.instance_of? Net::HTTPNotFound
-                puts "Requested page does not exist (404)"
-                puts "host: #{host}"
-                puts "path: #{path}"
-                result = nil
-            end
-
-            result
-        end
-
-        # uses Mechanize
-        def request_page uri
-            raise "invalid uri" if uri.nil?
-            raise "integrity user or pass missing" if @integrity_user.nil? or @integrity_pass.nil?
-
-            agent = Mechanize.new
-            agent.add_auth uri, @integrity_user, @integrity_pass
-            agent.get uri
         end
 
         def submit
@@ -85,6 +54,10 @@ module GerritHooks
 
             if success == true then verified = "1" else verified = "-1" end
             puts `ssh #{@ssh_url} gerrit review --verified #{verified} --project #{@project_name} #{@change_id},#{@patchset_id}`
+        end
+
+        def request_page uri
+            @notifier.request_page uri
         end
 
         private
